@@ -789,6 +789,9 @@ local pinnacle_v1_Backend = {
 ---@field theme string?
 ---@field size integer?
 
+---@class pinnacle.input.v1.WarpPointerRequest
+---@field loc pinnacle.util.v1.Point?
+
 ---@class pinnacle.input.v1.CalibrationMatrix
 ---@field matrix number[]?
 
@@ -1473,6 +1476,7 @@ pinnacle.input.v1.SetRepeatRateRequest = {}
 pinnacle.input.v1.SetXkbKeymapRequest = {}
 pinnacle.input.v1.SwitchXkbLayoutRequest = {}
 pinnacle.input.v1.SetXcursorRequest = {}
+pinnacle.input.v1.WarpPointerRequest = {}
 pinnacle.input.v1.CalibrationMatrix = {}
 pinnacle.input.v1.GetDevicesRequest = {}
 pinnacle.input.v1.GetDevicesResponse = {}
@@ -2001,6 +2005,23 @@ pinnacle.input.v1.InputService.SetXcursor.response = ".google.protobuf.Empty"
 ---@return string | nil error An error string, if any
 function Client:pinnacle_input_v1_InputService_SetXcursor(data)
     return self:unary_request(pinnacle.input.v1.InputService.SetXcursor, data)
+end
+pinnacle.input.v1.InputService.WarpPointer = {}
+pinnacle.input.v1.InputService.WarpPointer.service = "pinnacle.input.v1.InputService"
+pinnacle.input.v1.InputService.WarpPointer.method = "WarpPointer"
+pinnacle.input.v1.InputService.WarpPointer.request = ".pinnacle.input.v1.WarpPointerRequest"
+pinnacle.input.v1.InputService.WarpPointer.response = ".google.protobuf.Empty"
+
+---Performs a unary request.
+---
+---@nodiscard
+---
+---@param data pinnacle.input.v1.WarpPointerRequest
+---
+---@return google.protobuf.Empty | nil response
+---@return string | nil error An error string, if any
+function Client:pinnacle_input_v1_InputService_WarpPointer(data)
+    return self:unary_request(pinnacle.input.v1.InputService.WarpPointer, data)
 end
 pinnacle.input.v1.InputService.GetDevices = {}
 pinnacle.input.v1.InputService.GetDevices.service = "pinnacle.input.v1.InputService"

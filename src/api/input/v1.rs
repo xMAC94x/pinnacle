@@ -10,7 +10,8 @@ use pinnacle_api_defs::pinnacle::input::{
         MousebindStreamResponse, ScrollMethod, SendEventsMode, SetBindPropertiesRequest,
         SetDeviceLibinputSettingRequest, SetDeviceMapTargetRequest, SetRepeatRateRequest,
         SetXcursorRequest, SetXkbConfigRequest, SetXkbKeymapRequest, SwitchXkbLayoutRequest,
-        TapButtonMap, set_device_map_target_request::Target, switch_xkb_layout_request::Action,
+        TapButtonMap, WarpPointerRequest, set_device_map_target_request::Target,
+        switch_xkb_layout_request::Action,
     },
 };
 use smithay::reexports::input as libinput;
@@ -815,6 +816,18 @@ impl input::v1::input_service_server::InputService for InputService {
             if let Some(output) = state.pinnacle.focused_output().cloned() {
                 state.schedule_render(&output)
             }
+        })
+        .await
+    }
+
+    async fn warp_pointer(&self, request: Request<WarpPointerRequest>) -> TonicResult<()> {
+        let loc = request
+            .into_inner()
+            .loc
+            .ok_or_else(|| Status::invalid_argument("no location specified"))?;
+
+        run_unary_no_response(&self.sender, move |state| {
+            state.warp_cursor_to_global_loc((loc.x as f64, loc.y as f64));
         })
         .await
     }

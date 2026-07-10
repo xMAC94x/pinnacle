@@ -692,6 +692,28 @@ function input.set_xcursor_size(size)
     end
 end
 
+---Warps the pointer to the given global logical coordinates.
+---
+---The coordinates are in the same global logical space returned by
+---`OutputHandle:loc()` and `OutputHandle:logical_size()`.
+---
+---Warping the pointer sends pointer motion, so this may trigger pointer enter and focus behavior.
+---If there is no pointer, this does nothing.
+---@param x integer The global logical x-coordinate.
+---@param y integer The global logical y-coordinate.
+function input.warp_pointer(x, y)
+    local _, err = client:pinnacle_input_v1_InputService_WarpPointer({
+        loc = {
+            x = x,
+            y = y,
+        },
+    })
+
+    if err then
+        log.error(err)
+    end
+end
+
 ---@class pinnacle.input.InputSignal Signals related to input events.
 ---@field device_added fun(device: pinnacle.input.libinput.DeviceHandle)? A new input device was connected.
 

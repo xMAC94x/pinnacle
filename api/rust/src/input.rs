@@ -13,7 +13,7 @@ use pinnacle_api_defs::pinnacle::input::{
         BindProperties, BindRequest, EnterBindLayerRequest, GetBindInfosRequest,
         KeybindOnPressRequest, KeybindStreamRequest, MousebindOnPressRequest,
         MousebindStreamRequest, SetBindPropertiesRequest, SetRepeatRateRequest, SetXcursorRequest,
-        SetXkbConfigRequest, SetXkbKeymapRequest, SwitchXkbLayoutRequest,
+        SetXkbConfigRequest, SetXkbKeymapRequest, SwitchXkbLayoutRequest, WarpPointerRequest,
         switch_xkb_layout_request,
     },
 };
@@ -24,6 +24,7 @@ use crate::{
     BlockOnTokio,
     client::Client,
     signal::{InputSignal, SignalHandle},
+    util::Point,
 };
 
 pub mod libinput;
@@ -765,6 +766,28 @@ pub fn set_xcursor_size(size: u32) {
             size: Some(size),
         })
         .block_on_tokio()
+        .unwrap();
+}
+
+/// Warps the pointer to the given global logical coordinates.
+///
+/// The coordinates are in the same global logical space returned by
+/// [`OutputHandle::loc`][crate::output::OutputHandle::loc] and
+/// [`OutputHandle::logical_size`][crate::output::OutputHandle::logical_size].
+///
+/// Warping the pointer sends pointer motion, so this may trigger pointer enter and focus behavior.
+/// If there is no pointer, this does nothing.
+pub fn warp_pointer(x: i32, y: i32) {
+    warp_pointer_async(x, y).block_on_tokio();
+}
+
+/// Async impl for [`warp_pointer`].
+pub async fn warp_pointer_async(x: i32, y: i32) {
+    Client::input()
+        .warp_pointer(WarpPointerRequest {
+            loc: Some(Point { x, y }.into()),
+        })
+        .await
         .unwrap();
 }
 

@@ -155,6 +155,10 @@ message SetXcursorRequest {
   optional uint32 size = 2;
 }
 
+message WarpPointerRequest {
+  pinnacle.util.v1.Point loc = 1;
+}
+
 // ========================================= //
 // Libinput                                  //
 // ========================================= //
@@ -327,6 +331,7 @@ service InputService {
   // Xcursor
 
   rpc SetXcursor(SetXcursorRequest) returns (google.protobuf.Empty);
+  rpc WarpPointer(WarpPointerRequest) returns (google.protobuf.Empty);
 
   // Libinput
 
