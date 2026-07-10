@@ -196,7 +196,7 @@ fn refresh_workspace_group(protocol_state: &mut ExtWorkspaceManagerState, output
     // Send workspace_enter for all existing workspaces on this output.
     for group in &data.instances {
         let manager: &ExtWorkspaceManagerV1 = group.data().unwrap();
-        for (_, tag_data) in protocol_state.tags.iter() {
+        for tag_data in protocol_state.tags.values() {
             if &tag_data.output != output {
                 continue;
             }

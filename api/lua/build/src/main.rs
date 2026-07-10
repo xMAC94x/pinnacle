@@ -116,7 +116,7 @@ fn generate_enum_definitions(enums: &EnumMap) -> String {
         let mut table = format!("---@enum {name}\nlocal {} = {{\n", name.replace('.', "_"));
 
         for val in data.values.iter() {
-            table += &format!("    {} = {},\n", &val.name, val.number);
+            table += &format!("    {} = {},\n", val.name, val.number);
         }
 
         table += "}\n\n";
@@ -181,7 +181,7 @@ fn generate_message_classes(msgs: &MessageMap) -> String {
 
             ret.push(format!(
                 "---@field {} {type}{repeated}{non_nil}",
-                &field.name
+                field.name
             ));
         }
 
